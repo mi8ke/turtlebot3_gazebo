@@ -12,8 +12,6 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     package_name = 'turtlebot3_gazebo'
-    # urdf_file_name = 'turtlebot3_waffle.urdf'
-    # urdf_file_name = 'turtlebot3_waffle_3dlidar.urdf'
     urdf_file_name = 'turtlebot3_lidar.urdf'
 
     urdf = os.path.join(
@@ -31,6 +29,7 @@ def generate_launch_description():
             PythonLaunchDescriptionSource([os.path.join(
                 get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
         ),
+
 
         Node(
             package='robot_state_publisher',
