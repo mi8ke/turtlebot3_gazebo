@@ -312,7 +312,24 @@
   </joint>
   <link name="camera_depth_optical_frame"/>
 
+  <!-- ★ 変換後の完全名に合わせてピンポイント指定 -->
+  <gazebo reference="base_footprint::base_footprint_fixed_joint_lump__base_visual_visual">
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/DarkGrey</name>
+      </script>
+    </material>
+  </gazebo>
 
+  <gazebo reference="wheel_left_link::wheel_left_link_fixed_joint_lump__wheel_left_visual_visual">
+    <material>
+      <script>
+        <uri>file://media/materials/scripts/gazebo.material</uri>
+        <name>Gazebo/Black</name>
+      </script>
+    </material>
+  </gazebo>
 
 
   <!-- 変換後SDFで出ていた“完全名”に合わせて参照する形でもOK -->
