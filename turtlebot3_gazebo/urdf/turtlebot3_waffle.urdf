@@ -4,10 +4,6 @@
   <material name="black"><color rgba="0.0 0.0 0.0 1.0"/></material>
   <material name="dark"><color rgba="0.3 0.3 0.3 1.0"/></material>
 
-  <gazebo>
-    <disableFixedJointLumping>true</disableFixedJointLumping>
-  </gazebo>
-
   <link name="base_footprint"/>
 
   <joint name="base_joint" type="fixed">
@@ -19,10 +15,10 @@
   <link name="base_link">
     <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
-      <!-- <geometry>
+      <geometry>
         <mesh filename="file:///home/miyake/ros2_ws/src/turtlebot3_gazebo/turtlebot3_gazebo/models/turtlebot3_common/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
-      </geometry> -->
-      <geometry><box size="0.20 0.20 0.05"/></geometry>
+      </geometry>
+      <!-- <geometry><box size="0.20 0.20 0.05"/></geometry> -->
     </visual>
     <collision>
       <origin xyz="-0.064 0 0.047" rpy="0 0 0"/>
@@ -303,6 +299,7 @@
   </joint>
   <link name="camera_depth_optical_frame"/>
 
+  <!-- 色の指定 -->
   <gazebo reference="base_link">
     <material>Gazebo/White</material>
   </gazebo>
