@@ -73,6 +73,8 @@ def generate_launch_description():
         output='screen'
     )
 
+    no_model_db = SetEnvironmentVariable('GAZEBO_MODEL_DATABASE_URI', '')  # ← これを追加
+
     # ALSA 警告抑制（任意）
     sdl_no_audio = SetEnvironmentVariable('SDL_AUDIODRIVER', 'dummy')
 
@@ -99,6 +101,7 @@ def generate_launch_description():
     ld.add_action(DeclareLaunchArgument('y_pose', default_value='-0.5'))
     ld.add_action(DeclareLaunchArgument('world', default_value=world_path_default))
 
+    ld.add_action(no_model_db)
     ld.add_action(sdl_no_audio)
     ld.add_action(set_model_path)
     ld.add_action(set_resource_path)
