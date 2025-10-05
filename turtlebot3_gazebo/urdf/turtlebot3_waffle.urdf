@@ -17,17 +17,12 @@
   </joint>
 
   <link name="base_link">
-    <visual name="base_visual">
+    <visual>
       <origin xyz="-0.064 0 0.0" rpy="0 0 0"/>
       <!-- <geometry>
         <mesh filename="file:///home/miyake/ros2_ws/src/turtlebot3_gazebo/turtlebot3_gazebo/models/turtlebot3_common/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
       </geometry> -->
       <geometry><box size="0.20 0.20 0.05"/></geometry>
-      <material name="base_grey_inline">
-        <color rgba="0.55 0.55 0.55 1.0"/>
-      </material> 
-      <!-- <material name="mat_base_grey"/> -->
-      <!-- <material name="grey"/> -->
     </visual>
     <collision>
       <origin xyz="-0.064 0 0.047" rpy="0 0 0"/>
@@ -52,14 +47,11 @@
   </joint>
 
   <link name="wheel_left_link">
-     <visual name="wheel_left_visual">
+     <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
         <mesh filename="model://turtlebot3_common/meshes/tire.dae" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="wheel_black_inline">
-        <color rgba="0.15 0.15 0.15 1.0"/>
-      </material>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -84,7 +76,7 @@
   </joint>
 
   <link name="wheel_right_link">
-    <visual name="wheel_right_visual">
+    <visual>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
       <geometry>
         <mesh filename="model://turtlebot3_common/meshes/tire.dae" scale="0.001 0.001 0.001"/>
@@ -112,12 +104,11 @@
   </joint>
 
   <link name="caster_back_right_link">
-    <visual name="caster_back_right_visual"> 
+    <visual> 
       <origin xyz="0 0.001 0" rpy="0 0 0"/>
       <geometry>
         <cylinder length="0.018" radius="0.009"/>
       </geometry>
-      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0 0.001 0" rpy="0 0 0"/>
@@ -312,46 +303,23 @@
   </joint>
   <link name="camera_depth_optical_frame"/>
 
-  <!-- ★ 変換後の完全名に合わせてピンポイント指定 -->
-  <gazebo reference="base_footprint::base_footprint_fixed_joint_lump__base_visual_visual">
-    <material>
-      <script>
-        <uri>file://media/materials/scripts/gazebo.material</uri>
-        <name>Gazebo/DarkGrey</name>
-      </script>
-    </material>
-  </gazebo>
-
-  <gazebo reference="wheel_left_link::wheel_left_link_fixed_joint_lump__wheel_left_visual_visual">
-    <material>
-      <script>
-        <uri>file://media/materials/scripts/gazebo.material</uri>
-        <name>Gazebo/Black</name>
-      </script>
-    </material>
-  </gazebo>
-
-
-  <!-- 変換後SDFで出ていた“完全名”に合わせて参照する形でもOK -->
   <gazebo reference="base_link">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/White</material>
   </gazebo>
-
   <gazebo reference="wheel_left_link">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/Black</material>
   </gazebo>
   <gazebo reference="wheel_right_link">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/Black</material>
   </gazebo>
-
   <gazebo reference="base_scan">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/White</material>
   </gazebo>
   <gazebo reference="caster_back_left_link">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/Black</material>
   </gazebo>
   <gazebo reference="caster_back_right_link">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/Black</material>
   </gazebo>
   
 </robot>
