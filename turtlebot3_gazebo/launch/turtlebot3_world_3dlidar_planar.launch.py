@@ -18,9 +18,9 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
     pkg_tb3_gz = get_package_share_directory('turtlebot3_gazebo')
+    aws_small_warehouse_dir = get_package_share_directory('aws_robomaker_small_warehouse_world')
 
     # Gazebo ROS プラグインの場所
     gazebo_ros_prefix = get_package_prefix('gazebo_ros')   # 例: /opt/ros/humble
@@ -44,7 +44,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     x_pose = LaunchConfiguration('x_pose', default='-2.0')
     y_pose = LaunchConfiguration('y_pose', default='-0.5')
-    world_path_default = os.path.join(pkg_tb3_gz, 'worlds', 'turtlebot3_world.world')
+    world_path_default = os.path.join(aws_small_warehouse_dir, 'worlds', 'no_roof_small_warehouse', 'no_roof_small_warehouse.world')
     world = LaunchConfiguration('world', default=world_path_default)
 
     # Gazebo Classic を生コマンドで起動（★順番: init/api → factory）
@@ -80,10 +80,15 @@ def generate_launch_description():
 
     # モデル/リソース探索パス（model:// と world の相対参照の解決に有効）
     models_dir = os.path.join(pkg_tb3_gz, 'models')
+
     set_model_path = SetEnvironmentVariable(
         'GAZEBO_MODEL_PATH',
-        models_dir + os.pathsep + os.environ.get('GAZEBO_MODEL_PATH', '')
+        '/home/daifuku/ros2_ws/src/aws-robomaker-small-warehouse-world/models'
+        + os.pathsep + models_dir
+        + os.pathsep + os.path.join(aws_small_warehouse_dir, 'models')
+        + os.pathsep + os.environ.get('GAZEBO_MODEL_PATH', '')
     )
+
     set_resource_path = SetEnvironmentVariable(
         'GAZEBO_RESOURCE_PATH',
         os.path.join(pkg_tb3_gz, 'worlds')
@@ -100,17 +105,24 @@ def generate_launch_description():
     ld.add_action(DeclareLaunchArgument('x_pose', default_value='-2.0'))
     ld.add_action(DeclareLaunchArgument('y_pose', default_value='-0.5'))
     ld.add_action(DeclareLaunchArgument('world', default_value=world_path_default))
-
     ld.add_action(no_model_db)
     ld.add_action(sdl_no_audio)
     ld.add_action(set_model_path)
     ld.add_action(set_resource_path)
     ld.add_action(info_api)
     ld.add_action(info_factory)
-
     ld.add_action(gzserver)
     ld.add_action(gzclient)
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_tb3_from_urdf)
+    
+    log_model_path = LogInfo(
+        msg='Set GAZEBO_MODEL_PATH to: '
+            + '/home/daifuku/ros2_ws/src/aws-robomaker-small-warehouse-world/models'
+            + os.pathsep + os.path.join(pkg_tb3_gz, 'models')
+            + os.pathsep + os.environ.get('GAZEBO_MODEL_PATH', '')
+    )
+
+    ld.add_action(log_model_path)
 
     return ld
