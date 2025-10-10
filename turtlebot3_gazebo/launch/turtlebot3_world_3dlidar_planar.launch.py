@@ -73,56 +73,23 @@ def generate_launch_description():
         output='screen'
     )
 
-    no_model_db = SetEnvironmentVariable('GAZEBO_MODEL_DATABASE_URI', '')  # ← これを追加
-
-    # ALSA 警告抑制（任意）
-    sdl_no_audio = SetEnvironmentVariable('SDL_AUDIODRIVER', 'dummy')
-
-    # モデル/リソース探索パス（model:// と world の相対参照の解決に有効）
-    models_dir = os.path.join(pkg_tb3_gz, 'models')
-
-    set_model_path = SetEnvironmentVariable(
+    set_gazebo_asset_path = SetEnvironmentVariable(
         'GAZEBO_MODEL_PATH',
-        '/home/daifuku/ros2_ws/src/aws-robomaker-small-warehouse-world/models'
-        + os.pathsep + models_dir
-        + os.pathsep + os.path.join(aws_small_warehouse_dir, 'models')
-        + os.pathsep + os.environ.get('GAZEBO_MODEL_PATH', '')
+        os.pathsep.join([
+            os.path.join(pkg_tb3_gz, 'models'),
+            os.path.join(aws_small_warehouse_dir, 'models')
+        ])
     )
-
-    set_resource_path = SetEnvironmentVariable(
-        'GAZEBO_RESOURCE_PATH',
-        os.path.join(pkg_tb3_gz, 'worlds')
-        + os.pathsep + models_dir
-        + os.pathsep + os.environ.get('GAZEBO_RESOURCE_PATH', '')
-    )
-
-    # 参考ログ
-    info_api = LogInfo(msg=f'Gazebo ROS API plugin: {selected_api_plugin if selected_api_plugin else "NOT FOUND (factory only)"}')
-    info_factory = LogInfo(msg=f'Gazebo ROS Factory plugin: {factory_plugin}')
 
     ld = LaunchDescription()
     ld.add_action(DeclareLaunchArgument('use_sim_time', default_value='true'))
     ld.add_action(DeclareLaunchArgument('x_pose', default_value='-2.0'))
     ld.add_action(DeclareLaunchArgument('y_pose', default_value='-0.5'))
     ld.add_action(DeclareLaunchArgument('world', default_value=world_path_default))
-    ld.add_action(no_model_db)
-    ld.add_action(sdl_no_audio)
-    ld.add_action(set_model_path)
-    ld.add_action(set_resource_path)
-    ld.add_action(info_api)
-    ld.add_action(info_factory)
+    ld.add_action(set_gazebo_asset_path)
     ld.add_action(gzserver)
     ld.add_action(gzclient)
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_tb3_from_urdf)
-    
-    log_model_path = LogInfo(
-        msg='Set GAZEBO_MODEL_PATH to: '
-            + '/home/daifuku/ros2_ws/src/aws-robomaker-small-warehouse-world/models'
-            + os.pathsep + os.path.join(pkg_tb3_gz, 'models')
-            + os.pathsep + os.environ.get('GAZEBO_MODEL_PATH', '')
-    )
-
-    ld.add_action(log_model_path)
 
     return ld
